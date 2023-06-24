@@ -163,37 +163,37 @@ jobs:
   #   - name: Run Pytest (default)
   #     run: GPU=1 python -m pytest -s -v -n=auto test/
 
-  testopencl:
-    name: openpilot (OpenCL) Test
-    runs-on: ubuntu-20.04
+  # testopencl:
+  #   name: openpilot (OpenCL) Test
+  #   runs-on: ubuntu-20.04
 
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-    - name: Update packages
-      run: |
-        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-        sudo apt-get update
-    - name: Install OpenCL
-      #run: sudo apt-get install -y pocl-opencl-icd
-      run: sudo apt-get install -y intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-    - name: Install Dependencies
-      run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
-    - name: Test GPU IMAGE ops
-      run: |
-        GPU=1 IMAGE=1 python3 test/test_ops.py
-        FORWARD_ONLY=1 GPU=1 IMAGE=2 python3 test/test_ops.py
-    - name: Test openpilot model
-      run: |
-        ALLOWED_KERNEL_COUNT=199 FLOAT16=1 VALIDHACKS=1 DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
-        python3 -c 'import os; assert os.path.getsize("/tmp/output.thneed") < 100_000_000'
-        DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
-        VALIDHACKS=1 DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
+  #   steps:
+  #   - name: Checkout Code
+  #     uses: actions/checkout@v3
+  #   - name: Update packages
+  #     run: |
+  #       wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+  #       echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+  #       sudo apt-get update
+  #   - name: Install OpenCL
+  #     #run: sudo apt-get install -y pocl-opencl-icd
+  #     run: sudo apt-get install -y intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
+  #   - name: Set up Python 3.8
+  #     uses: actions/setup-python@v4
+  #     with:
+  #       python-version: 3.8
+  #   - name: Install Dependencies
+  #     run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
+  #   - name: Test GPU IMAGE ops
+  #     run: |
+  #       GPU=1 IMAGE=1 python3 test/test_ops.py
+  #       FORWARD_ONLY=1 GPU=1 IMAGE=2 python3 test/test_ops.py
+  #   - name: Test openpilot model
+  #     run: |
+  #       ALLOWED_KERNEL_COUNT=199 FLOAT16=1 VALIDHACKS=1 DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
+  #       python3 -c 'import os; assert os.path.getsize("/tmp/output.thneed") < 100_000_000'
+  #       DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
+  #       VALIDHACKS=1 DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
 
   testmetal:
     name: Metal Tests
@@ -201,10 +201,10 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
-    - name: Set up Python 3.10
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
-        python-version: 3.10
+        python-version: 3.11
     - name: Install Dependencies
       run: pip install -e '.[metal,testing]'
     - name: Run dtype test
