@@ -207,8 +207,6 @@ jobs:
         python-version: 3.11
     - name: Install Dependencies
       run: pip install -e '.[metal,testing]'
-    - name: Install tinygrad dependencies
-      run: pip install -e '.[testing, cuda]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Run dtype test
       run: DEBUG=4 METAL=1 python -m pytest test/test_dtype.py
     - name: Run ops test
