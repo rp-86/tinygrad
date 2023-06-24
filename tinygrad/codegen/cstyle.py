@@ -135,10 +135,10 @@ def uops_to_cstyle(uops:List[UOp], bufs:List[Union[LocalBuffer,LazyBuffer]], lan
             val = f"vload_half4({(args.idx//4).render(render_cl)}, {bufnames[args.i]})"
           else:
             val = f"vload_half({args.idx.render(render_cl)}, {bufnames[args.i]})"
-            apply_barrier = True
         else:
           if newvar.dtype == dtypes._float4:
             val = f"({newvar.dtype.name})((({lang.smem_prefix if isinstance(bufs[args.i], LocalBuffer) else lang.buffer_prefix}{bufs[args.i].dtype.name}4*){bufnames[args.i]})[{(args.idx//4).render(render_cl)}])"
+            apply_barrier = True
           else:
             val = f"{bufnames[args.i]}[{args.idx.render(render_cl)}]"
       # NOTE: if min and max are both 0, it should be a CONST in the Linearizer
