@@ -9,7 +9,7 @@ def kernel(X, stride_xm, stride_xn, BLOCK: tl.constexpr):
     pass
 
 
-X = torch.randn(1, device="cuda")
+X = torch.randn(1, device="CUDA")
 pgm = kernel[(1,)](X, 1, 1, BLOCK=1024)
 
 def program(b0, b1, b2):
@@ -27,7 +27,7 @@ program_jit = JITFunction(program)
 # print(compiled.asm['ttir'])
 # #print(compiled.asm['ttgir'])
 # print(eval(compiled.asm['llir']).decode('utf-8'))
-#print(compiled.asm['ptx'])
+# print(compiled.asm['ptx'])
 
 # print("running")
 # size = 4
