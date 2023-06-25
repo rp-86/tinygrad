@@ -21,10 +21,10 @@ print(compiled.asm['ttir'])
 print(eval(compiled.asm['llir']).decode('utf-8'))
 #print(compiled.asm['ptx'])
 
-print("running")
-size = 4
-x = torch.ones(size, device='cuda')
-y = torch.ones(size, device='cuda')
-output = torch.empty_like(x)
-out = compiled[(output.numel(),1,1)](output, x, y)
-print("Triton Output:",output)
+# print("running")
+# size = 4
+# x = torch.ones(size, device='cuda')
+# y = torch.ones(size, device='cuda')
+# output = torch.empty_like(x)
+# out = compiled[(output.numel(),1,1)](output, x, y)
+# print("Triton Output:",output)
