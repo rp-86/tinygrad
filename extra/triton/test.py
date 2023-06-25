@@ -3,13 +3,14 @@ import triton
 import triton.language as tl
 from triton.compiler import compile
 from triton.runtime import JITFunction
+from tinygrad.lazy import Device
 
 @triton.jit
 def kernel(X, stride_xm, stride_xn, BLOCK: tl.constexpr):
     pass
 
 
-X = torch.randn(1, device="CUDA")
+X = torch.randn(1)
 pgm = kernel[(1,)](X, 1, 1, BLOCK=1024)
 
 def program(b0, b1, b2):
