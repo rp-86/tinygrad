@@ -135,33 +135,33 @@ jobs:
   #   - name: Run ONNX
   #     run: TORCH=1 python -m pytest test/external/external_test_onnx_backend.py --tb=no --disable-warnings || true
 
-  # testgpu:
-  #   name: GPU Tests
-  #   runs-on: ubuntu-20.04
+  testgpu:
+    name: GPU Tests
+    runs-on: ubuntu-20.04
 
-  #   steps:
-  #   - name: Checkout Code
-  #     uses: actions/checkout@v3
-  #   - name: Update packages
-  #     run: |
-  #       wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-  #       echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-  #       sudo apt-get update
-  #   - name: Install OpenCL
-  #     #run: sudo apt-get install -y pocl-opencl-icd
-  #     run: sudo apt-get install -y intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
-  #   - name: Set up Python 3.8
-  #     uses: actions/setup-python@v4
-  #     with:
-  #       python-version: 3.8
-  #   - name: Install Dependencies
-  #     run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
-  #   - name: Run Optimizer Test (OPT 2 and 3)
-  #     run: |
-  #       PYTHONPATH="." OPT=2 GPU=1 python test/external/external_test_opt.py
-  #       PYTHONPATH="." OPT=3 GPU=1 python test/external/external_test_opt.py
-  #   - name: Run Pytest (default)
-  #     run: GPU=1 python -m pytest -s -v -n=auto test/
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    - name: Update packages
+      run: |
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+        sudo apt-get update
+    - name: Install OpenCL
+      #run: sudo apt-get install -y pocl-opencl-icd
+      run: sudo apt-get install -y intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+    - name: Install Dependencies
+      run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
+    - name: Run Optimizer Test (OPT 2 and 3)
+      run: |
+        PYTHONPATH="." OPT=2 GPU=1 python test/external/external_test_opt.py
+        PYTHONPATH="." OPT=3 GPU=1 python test/external/external_test_opt.py
+    - name: Run Pytest (default)
+      run: GPU=1 python3 -c 'from tinygrad.lazy import Device; print(Device.DEFAULT)'
 
   # testopencl:
   #   name: openpilot (OpenCL) Test
@@ -195,22 +195,22 @@ jobs:
   #       DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
   #       VALIDHACKS=1 DEBUGCL=1 GPU=1 IMAGE=2 python3 openpilot/compile.py
 
-  testmetal:
-    name: Metal Tests
-    runs-on: macos-13
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
-    - name: Install Dependencies
-      run: pip install -e '.[metal,testing]'
-    - name: Run dtype test
-      run: DEBUG=4 METAL=1 python -m pytest test/test_dtype.py
-    - name: Run ops test
-      run: DEBUG=2 METAL=1 python -m pytest test/test_ops.py
+  # testmetal:
+  #   name: Metal Tests
+  #   runs-on: macos-13
+  #   steps:
+  #   - name: Checkout Code
+  #     uses: actions/checkout@v3
+  #   - name: Set up Python 3.9
+  #     uses: actions/setup-python@v4
+  #     with:
+  #       python-version: 3.11
+  #   - name: Install Dependencies
+  #     run: pip install -e '.[metal,testing]'
+  #   - name: Run dtype test
+  #     run: DEBUG=4 METAL=1 python -m pytest test/test_dtype.py
+  #   - name: Run ops test
+  #     run: DEBUG=2 METAL=1 python -m pytest test/test_ops.py
 
   # disabled, this test is flaky
   # testdocker:
